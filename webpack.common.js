@@ -1,6 +1,8 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
+const WriteFilePlugin =require('write-file-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -14,7 +16,12 @@ module.exports = {
         viewport: 'width=device-width, user-scalable=no, initial-scale=1.0'
       },
       template: './src/index.html'
-    })
+    }),
+    new WriteFilePlugin(),
+    new CopyPlugin([
+      { from: 'models/', to: './' ,context:"src/"},
+      // { from: 'other', to: 'public' },
+    ]),
   ],
   output: {
     filename: '[name].bundle.js',
@@ -36,7 +43,7 @@ module.exports = {
         }
       },
       {
-        test: /\.(png|svg|jpg|gif)$/,
+        test: /\.(png|svg|jpg|gif|mtl|obj)$/,
         use: [
           'file-loader'
         ]
